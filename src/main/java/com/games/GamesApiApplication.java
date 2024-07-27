@@ -1,13 +1,13 @@
-package com.annagames;
+package com.games;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FiescApiApplication {
+public class GamesApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FiescApiApplication.class, args);
+		SpringApplication.run(GamesApiApplication.class, args);
 	}
 
 }
