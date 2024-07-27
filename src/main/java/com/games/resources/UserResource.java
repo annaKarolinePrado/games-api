@@ -2,7 +2,6 @@ package com.games.resources;
 import com.games.DTO.UserDTO;
 import com.games.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +13,12 @@ public class UserResource {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDTO>> getUsersByEmail(@RequestParam String email) {
+        List<UserDTO> users = userService.findUsersByEmail(email);
+        return ResponseEntity.ok(users);
+    }
 
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {

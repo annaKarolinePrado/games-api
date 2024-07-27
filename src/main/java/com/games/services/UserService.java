@@ -21,6 +21,11 @@ public class UserService {
         return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    public List<UserDTO> findUsersByEmail(String email) {
+        List<User> users = userRepository.findByEmailContainingIgnoreCase(email);
+        return users.stream().map(this::convertToDTO).collect(Collectors.toList());
+    }
+
     public UserDTO saveUser(UserDTO userDTO) {
         User user = convertToEntity(userDTO);
         user = userRepository.save(user);
