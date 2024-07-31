@@ -14,7 +14,8 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private boolean active;
+
+    private boolean active = Boolean.TRUE;
 
     @Enumerated(EnumType.STRING)
     private Profile profile;

@@ -5,6 +5,7 @@ import com.games.exceptions.BussinesException;
 import com.games.models.User;
 import com.games.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
@@ -17,6 +18,9 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
@@ -28,6 +32,7 @@ public class UserService {
 
     public UserDTO saveUser(UserDTO userDTO) {
         User user = convertToEntity(userDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Criptografar a senha aqui
         user = userRepository.save(user);
         return convertToDTO(user);
     }
@@ -92,4 +97,6 @@ public class UserService {
         user.setActive(userDTO.isActive());
         return user;
     }
+
+
 }
