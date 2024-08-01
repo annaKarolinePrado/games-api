@@ -70,4 +70,12 @@ public class JwtUtil {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+    public String refreshToken(String token) {
+        if (isTokenExpired(token)) {
+            throw new IllegalArgumentException("Token is expired and cannot be refreshed");
+        }
+        Claims claims = extractAllClaims(token);
+        return createToken(claims, claims.getSubject());
+    }
 }

@@ -13,10 +13,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AuthController {
+public class AuthResource {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -38,6 +39,20 @@ public class AuthController {
             return ResponseEntity.ok(token);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(401).body("Credenciais inválidas");
+        }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refresh(@RequestHeader("Authorization") String token) {
+        try {
+            if (token != null && token.startsWith("Bearer ")) {
+                String refreshedToken = jwtUtil.refreshToken(token.substring(7));
+                return ResponseEntity.ok(refreshedToken);
+            } else {
+                return ResponseEntity.status(400).body("Token inválido");
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(400).body("Token expirado e não pode ser atualizado");
         }
     }
 }
