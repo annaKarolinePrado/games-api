@@ -2,6 +2,8 @@ package com.games.DTO;
 
 import com.games.enums.Profile;
 
+import java.util.List;
+
 public class UserDTO {
 
     private Long id;
@@ -9,7 +11,7 @@ public class UserDTO {
     private String email;
     private String password;
     private boolean active;
-    private Profile profile;
+    private List<Profile> profiles;
 
 
     public Long getId() {
@@ -47,10 +49,10 @@ public class UserDTO {
         this.active = active;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public List<Profile> getProfiles() {
+        return profiles;
     }
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setProfile(List<Profile> profiles) {
+        this.profiles = profiles;
     }
 }

@@ -1,6 +1,7 @@
 package com.games.services;
 
 import com.games.DTO.UserDTO;
+import com.games.enums.Profile;
 import com.games.exceptions.BussinesException;
 import com.games.models.User;
 import com.games.repositories.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,8 +83,7 @@ public class UserService {
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
         userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setProfile(user.getProfile());
+        userDTO.setProfile(user.getProfiles());
         userDTO.setActive(user.getActive());
         return userDTO;
     }
@@ -93,7 +94,7 @@ public class UserService {
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
-        user.setProfile(userDTO.getProfile());
+        user.setProfiles(userDTO.getProfiles());
         user.setActive(userDTO.isActive());
         return user;
     }

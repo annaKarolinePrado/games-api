@@ -7,7 +7,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -24,18 +25,18 @@ public class User implements UserDetails {
     private boolean active = Boolean.TRUE;
 
     @Enumerated(EnumType.STRING)
-    private Profile profile;
+    private List<Profile> profiles;
 
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, boolean active, Profile profile) {
+    public User(Long id, String name, String email, String password, boolean active, List<Profile> profiles) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.active = active;
-        this.profile = profile;
+        this.profiles = profiles;
     }
 
     public Long getId() {
@@ -73,16 +74,18 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public List<Profile> getProfiles() {
+        return profiles;
     }
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setProfiles(List<Profile> profiles) {
+        this.profiles = profiles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(profile.name()));
+        return profiles.stream()
+                .map(profile -> new SimpleGrantedAuthority(profile.name()))
+                .collect(Collectors.toList());
     }
 
     @Override
