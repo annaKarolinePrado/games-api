@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +33,10 @@ public class UserService {
     }
 
     public UserDTO saveUser(UserDTO userDTO) {
+        if (userRepository.existsByNickname(userDTO.getNickname())) {
+            throw new BussinesException("Nickname já está em uso.");
+        }
+
         User user = convertToEntity(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Criptografar a senha aqui
         user = userRepository.save(user);
@@ -82,8 +86,9 @@ public class UserService {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
+        userDTO.setNickname(user.getNickname());
         userDTO.setEmail(user.getEmail());
-        userDTO.setProfile(user.getProfiles());
+        userDTO.setProfiles(user.getProfiles());
         userDTO.setActive(user.getActive());
         return userDTO;
     }
@@ -92,6 +97,7 @@ public class UserService {
         User user = new User();
         user.setId(userDTO.getId());
         user.setName(userDTO.getName());
+        user.setNickname(userDTO.getNickname());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
         user.setProfiles(userDTO.getProfiles());
@@ -99,5 +105,23 @@ public class UserService {
         return user;
     }
 
+    public boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 
+    public void createDefaultUser() {
+        if (userRepository.count() == 0) {
+            User defaultUser = new User();
+            UserDTO defaultUserDTO = new UserDTO();
+
+            defaultUserDTO.setName("Default User");
+            defaultUserDTO.setNickname("default.user");
+            defaultUserDTO.setEmail("default.user@example.com");
+            defaultUserDTO.setPassword("password3241");
+            defaultUserDTO.setActive(true);
+            defaultUserDTO.setProfiles(Arrays.asList(Profile.ROOT, Profile.PREMIUM));
+
+            saveUser(defaultUserDTO);
+        }
+    }
 }

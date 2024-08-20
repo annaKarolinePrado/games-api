@@ -19,6 +19,7 @@ public class User implements UserDetails {
     private Long id;
 
     private String name;
+    private String nickname;
     private String email;
     private String password;
 
@@ -30,9 +31,16 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String name, String email, String password, boolean active, List<Profile> profiles) {
+    public User(Long id,
+                String name,
+                String nickname,
+                String email,
+                String password,
+                boolean active,
+                List<Profile> profiles) {
         this.id = id;
         this.name = name;
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
         this.active = active;
@@ -51,6 +59,13 @@ public class User implements UserDetails {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {

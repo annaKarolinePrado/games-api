@@ -26,7 +26,7 @@ public class UserResource {
         return ResponseEntity.ok(savedUser);
     }
 
-    @PostMapping("create-lote")
+    @PostMapping("/create-lote")
     public ResponseEntity<Void> createUser(@RequestBody List<UserDTO> users) {
         users.forEach(user -> userService.saveUser(user));
         return  ResponseEntity.noContent().build();
@@ -59,5 +59,11 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@RequestBody List<UserDTO> users) {
         userService.deleteUserLote(users);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
+        boolean exists = userService.existsByNickname(nickname);
+        return ResponseEntity.ok(exists);
     }
 }

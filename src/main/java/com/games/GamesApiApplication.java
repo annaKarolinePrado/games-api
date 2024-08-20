@@ -10,6 +10,7 @@ public class GamesApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GamesApiApplication.class, args);
+
 	}
 
 }

@@ -8,6 +8,7 @@ public class UserDTO {
 
     private Long id;
     private String name;
+    private String nickname;
     private String email;
     private String password;
     private boolean active;
@@ -26,6 +27,13 @@ public class UserDTO {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -52,7 +60,7 @@ public class UserDTO {
     public List<Profile> getProfiles() {
         return profiles;
     }
-    public void setProfile(List<Profile> profiles) {
+    public void setProfiles(List<Profile> profiles) {
         this.profiles = profiles;
     }
 }

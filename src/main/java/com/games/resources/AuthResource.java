@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class AuthResource {
 
@@ -29,16 +32,19 @@ public class AuthResource {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid LoginRequest loginRequest) {
+        Map<String, Object> map = new HashMap<>();
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
             String token = jwtUtil.generateToken(userDetails);
-            return ResponseEntity.ok(token);
+            map.put("token", token);
+            return ResponseEntity.ok(map);
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Credenciais inválidas");
+            map.put("mensagem", "Credenciais inválidas");
+            return ResponseEntity.status(401).body(map);
         }
     }
 
